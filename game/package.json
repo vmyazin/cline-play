@@ -1,0 +1,13 @@
+{
+  "name": "cline-app",
+  "version": "^0.25.0",
+  "main": "index.html",
+  "scripts": {
+    "dev": "node dev.js",
+    "build": "npm run build"
+  },
+  "dependencies": {
+    "@cline/core": "^0.25.0",
+    "Express": "^4.18.2"
+  }
+}
