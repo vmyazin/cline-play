@@ -7,16 +7,18 @@
     <style>
         /* Previous styles remain the same until the score and controls sections */
         body {
-            background-color: #000;
+            background-color: #001000; /* Darker background */
             color: #00ff00;
             font-family: 'Courier New', monospace;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh; /* Ensure full viewport height */
             margin: 0;
-            overflow: hidden;
+            padding: 20px 0; /* Add some padding top and bottom */
+            overflow: visible;
             position: relative;
+            background-image: linear-gradient(to bottom, #000, #002000); /* Gradient background */
         }
 
         .matrix-bg {
@@ -30,13 +32,34 @@
             z-index: -1;
         }
 
+        .game-wrapper {
+            transform-style: preserve-3d;
+            perspective: 1200px;
+            transform: rotateX(35deg) scale3d(1, 1.3, 1);
+            margin: 100px auto 0; /* Center horizontally and add top margin */
+            width: fit-content;
+        }
+
         .game-container {
             position: relative;
-            padding: 20px;
-            border: 2px solid #00ff00;
-            box-shadow: 0 0 20px #00ff00;
-            background-color: rgba(0, 10, 0, 0.95);
-            animation: pulse 4s infinite;
+            padding: 40px;
+            border: none;
+            background-color: rgba(0, 0, 0, 0.8);
+            box-shadow: 0 0 30px #00ff00, 0 0 60px #00ee00 inset;
+            animation: pulse 5s infinite alternate;
+            border-radius: 10px;
+            transform-style: preserve-3d;
+            transform: translateZ(30px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 700px; /* Ensure enough height for the grid */
+            justify-content: center;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 20px #00ff00, 0 0 40px #00ee00 inset; }
+            100% { box-shadow: 0 0 40px #00ff00, 0 0 80px #00ee00 inset; }
         }
 
         @keyframes pulse {
@@ -59,17 +82,26 @@
             display: grid;
             grid-template-columns: repeat(10, 30px);
             grid-template-rows: repeat(20, 30px);
-            gap: 1px;
+            gap: 2px;
             background-color: rgba(0, 20, 0, 0.5);
-            border: 1px solid #00ff00;
-            box-shadow: inset 0 0 10px #00ff00;
+            border: 1px solid #002200;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.3) inset;
+            border-radius: 5px;
+            transform-style: preserve-3d;
+            margin: 0 auto;
         }
 
         .cell {
             width: 30px;
             height: 30px;
-            border: 1px solid #004400;
+            border: 1px solid #001100;
+            background-color: rgba(0, 20, 0, 0.7);
+            box-shadow: inset 0 0 5px rgba(0, 255, 0, 0.1);
             transition: all 0.1s ease;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .piece {
@@ -96,49 +128,58 @@
         #score {
             position: absolute;
             top: 20px;
-            right: -200px;
+            right: 20px; /* Adjust position */
             color: #00ff00;
-            font-size: 1.2em;
+            font-size: 1.1em; /* Slightly smaller font */
             text-shadow: 0 0 5px #00ff00;
-            border: 1px solid #00ff00;
-            padding: 10px;
-            background: rgba(0, 20, 0, 0.9);
+            border: none; /* Remove border */
+            padding: 8px 15px; /* Adjust padding */
+            background: rgba(0, 20, 0, 0.7); /* Slightly transparent background */
             white-space: pre;
             font-family: monospace;
-            border: 1px solid #00ff00; /* Add border */
-            padding: 10px; /* Add padding */
+            border-radius: 5px; /* Soften edges */
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5); /* Add subtle shadow */
         }
 
         .rules {
             position: absolute;
             top: 20px;
-            left: -220px; /* Position to the left */
+            left: 20px; /* Adjust position */
             color: #00ff00;
-            font-size: 0.9em;
+            font-size: 0.8em; /* Slightly smaller font */
             text-shadow: 0 0 3px #00ff00;
             font-family: monospace;
-            background: rgba(0, 20, 0, 0.9);
-            padding: 10px;
-            border: 1px solid #00ff00;
+            background: rgba(0, 20, 0, 0.7); /* Slightly transparent background */
+            padding: 8px 15px; /* Adjust padding */
+            border: none; /* Remove border */
             white-space: pre;
+            border-radius: 5px; /* Soften edges */
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5); /* Add subtle shadow */
         }
 
-        .controls {
-            position: absolute;
-            bottom: 20px;
-            right: -200px;
-            color: #00ff00;
-            font-size: 0.9em;
-            text-shadow: 0 0 3px #00ff00;
-            font-family: monospace;
-            background: rgba(0, 20, 0, 0.9);
-            padding: 10px;
-            border: 1px solid #00ff00;
-            white-space: pre;
-            border: 1px solid #00ff00; /* Add border */
-            padding: 10px; /* Add padding */
-        }
-
+        
+                .controls {
+                    position: fixed;
+                    bottom: 40px;
+                    right: 40px;
+                    color: #00ff00;
+                    font-size: 0.9em;
+                    text-shadow: 0 0 3px #00ff00;
+                    font-family: monospace;
+                    background: rgba(0, 20, 0, 0.7);
+                    padding: 15px 20px;
+                    border: 1px solid #00ff00;
+                    white-space: pre;
+                    border-radius: 8px;
+                    box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+                    transform-style: preserve-3d;
+                    transform: translateZ(50px); /* Push controls forward in 3D space */
+                    z-index: 100;
+                }
+        
+                .controls div {
+                    margin: 5px 0;
+                }
         @keyframes flicker {
             0% { opacity: 0.8; text-shadow: 0 0 10px #ff0000; }
             50% { opacity: 1; text-shadow: 0 0 15px #ff0000; }
@@ -149,17 +190,32 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%) translateZ(100px); /* Push way forward in 3D space */
             font-size: 2em;
             color: #ff0000;
             text-shadow: 0 0 10px #ff0000;
             animation: flicker 0.5s infinite;
             display: none;
-            background: rgba(0, 0, 0, 0.9);
-            padding: 20px;
+            background: rgba(0, 0, 0, 0.95);
+            padding: 30px;
             border: 2px solid #ff0000;
             font-family: monospace;
             white-space: pre;
+            text-align: center;
+            z-index: 1000; /* Ensure it's above other elements */
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
+            cursor: pointer; /* Indicate clickability */
+        }
+
+        .game-over::after {
+            content: "Press SPACE to hack again";
+            display: block;
+            font-size: 0.5em;
+            color: #00ff00;
+            text-shadow: 0 0 5px #00ff00;
+            margin-top: 20px;
+            animation: pulse 2s infinite;
+            transform-style: preserve-3d;
         }
 
         .title {
@@ -222,22 +278,25 @@
 </head>
 <body>
     <canvas class="matrix-bg" id="matrix"></canvas>
-    <div class="game-container">
-        <div class="title">H4CK3R T3TR1S v0.5</div>
-        <div id="game-board"></div>
-        <div id="score">SCORE: <span id="score-value">0</span></div>
-        <div class="controls">
-            <div>← Move Left</div>
-            <div>→ Move Right</div>
-            <div>↓ Move Down</div>
-            <div>↑ Rotate</div>
-            <div>␣ Drop</div>
-        </div>
-        <div class="game-over">┌─────────────┐
+    <div class="controls">
+        <div>← Move Left</div>
+        <div>→ Move Right</div>
+        <div>↓ Move Down</div>
+        <div>↑ Rotate</div>
+        <div>␣ Drop</div>
+    </div>
+    <div class="game-wrapper">
+        <div class="game-container">
+            <div class="title">H4CK3R T3TR1S v0.5</div>
+            <div id="game-board"></div>
+            <div id="score">SCORE: <span id="score-value">0</span></div>
+            <div class="game-over">┌─────────────┐
 │SYSTEM BREACH│
-└─────────────┘</div>
-        <div class="single-row-message message">Nice!</div>
-        <div class="multi-row-message message">H4CK3R!</div>
+└─────────────┘
+Press SPACE to hack again</div>
+            <div class="single-row-message message">Nice!</div>
+            <div class="multi-row-message message">H4CK3R!</div>
+        </div>
     </div>
     <footer>
         <p>&copy; 2025 My Game App</p>
@@ -297,6 +356,17 @@
                 this.gameLoop();
             }
 
+            resetGame() {
+                this.board = Array(20).fill().map(() => Array(10).fill(0));
+                this.score = 0;
+                this.gameOver = false;
+                document.getElementById('score-value').textContent = '0';
+                document.querySelector('.game-over').style.display = 'none';
+                this.spawnPiece();
+                this.render();
+                this.gameLoop();
+            }
+
             createBoard() {
                 const board = document.getElementById('game-board');
                 for (let i = 0; i < 20; i++) {
@@ -311,7 +381,12 @@
 
             bindControls() {
                 document.addEventListener('keydown', (e) => {
-                    if (this.gameOver) return;
+                    if (this.gameOver) {
+                        if (e.key === ' ') {
+                            this.resetGame();
+                        }
+                        return;
+                    }
                     
                     switch(e.key) {
                         case 'ArrowLeft':
@@ -329,6 +404,13 @@
                         case ' ':
                             this.dropPiece();
                             break;
+                    }
+                });
+
+                // Add click handler for game over message
+                document.querySelector('.game-over').addEventListener('click', () => {
+                    if (this.gameOver) {
+                        this.resetGame();
                     }
                 });
             }
@@ -433,10 +515,13 @@
             }
             
             showClearMessage(linesCleared) {
-                const messageDiv = linesCleared > 1 ? document.querySelector('.multi-row-message') : document.querySelector('.single-row-message');
+                const messageDiv = linesCleared > 1 ?
+                    document.querySelector('.multi-row-message') :
+                    document.querySelector('.single-row-message');
+                
                 if (messageDiv) {
                     messageDiv.style.display = 'block';
-                    messageDiv.style.left = `${Math.random() > 0.5 ? 20 : -200}px`
+                    messageDiv.style.left = `${Math.random() > 0.5 ? 20 : -200}px`;
                     setTimeout(() => {
                         messageDiv.style.display = 'none';
                     }, 3000);
