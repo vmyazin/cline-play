@@ -185,6 +185,39 @@
         font-family: monospace;
         border-top: 1px solid #00ff00;
     }
+
+        .message {
+            position: absolute;
+            font-size: 1.5em;
+            color: #00ff00;
+            text-shadow: 0 0 5px #00ff00;
+            white-space: pre;
+            font-family: monospace;
+            border-radius: 50%;
+            padding: 10px;
+            display: none;
+            animation: floatMessage 3s ease-out forwards;
+        }
+
+        .single-row-message {
+            border: 2px solid #00ff00;
+        }
+
+        .multi-row-message {
+            font-size: 2em;
+            border: 3px solid #00ff00;
+        }
+
+        @keyframes floatMessage {
+            0% {
+                opacity: 1;
+                transform: translateY(0) translateX(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100px) translateX(100px);
+            }
+        }
     </style>
 </head>
 <body>
@@ -203,6 +236,8 @@
         <div class="game-over">┌─────────────┐
 │SYSTEM BREACH│
 └─────────────┘</div>
+        <div class="single-row-message message">Nice!</div>
+        <div class="multi-row-message message">H4CK3R!</div>
     </div>
     <footer>
         <p>&copy; 2025 My Game App</p>
@@ -371,6 +406,7 @@
             }
 
             checkLines() {
+                let linesCleared = 0;
                 for (let i = this.board.length - 1; i >= 0; i--) {
                     if (this.board[i].every(cell => cell === 1)) {
                         // Add blinking animation to the row
@@ -388,10 +424,24 @@
                             this.flashBoundaries();
                             this.render(); // Re-render to show the new state
                         }, 1500); // Match the CSS animation duration
+                        linesCleared++;
                     }
                 }
+                if (linesCleared > 0) {
+                    this.showClearMessage(linesCleared);
+                }
             }
-
+            
+            showClearMessage(linesCleared) {
+                const messageDiv = linesCleared > 1 ? document.querySelector('.multi-row-message') : document.querySelector('.single-row-message');
+                if (messageDiv) {
+                    messageDiv.style.display = 'block';
+                    messageDiv.style.left = `${Math.random() > 0.5 ? 20 : -200}px`
+                    setTimeout(() => {
+                        messageDiv.style.display = 'none';
+                    }, 3000);
+                }
+            }
             spawnPiece() {
                 const minLength = 1;
                 const maxLength = 5;
